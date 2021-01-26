@@ -1,0 +1,30 @@
+#!/bin/bash
+
+declare -A knownWindows
+
+loopIt() {
+	
+  windowId=`xwininfo -tree -root | grep -F ': ("jetbrains-idea" "jetbrains-idea"' | grep -v "Content window" | grep -E "^[[:alnum:]]*.*\-*.*\[.*\]" | awk  '{ print $1}'`
+
+  for value in $windowId
+  do
+    existing=${knownWindows[$value]}
+    echo $value "?" $existing
+    if [ ! "$existing" = "observed" ]; then
+      echo "will set for $value"
+      xprop -id $value -f _NET_WM_WINDOW_OPACITY 32c -set _NET_WM_WINDOW_OPACITY $(printf 0x%x $((0xffffffff * 70 / 100)))
+    fi
+    knownWindows[$value]="observed"
+  done
+}
+
+
+while :
+do
+	  loopIt
+	  sleep 5
+done
+
+
+
+# xprop -id 0x2600026 -f _NET_WM_WINDOW_OPACITY 32c -set _NET_WM_WINDOW_OPACITY $(printf 0x%x $((0xffffffff * 70 / 100)))
