@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Transploop
+Exec=/home/jarek/scripts/transparency.sh
+Terminal=true
+Type=Application
+StartupNotify=false
+X-GNOME-Autostart-enabled=true
+
